@@ -1,0 +1,164 @@
+/**
+ * POS Barcode Scanner Styles
+ */
+
+/* Scanner Modal */
+#barcode-scanner-modal .modal-dialog {
+    max-width: 700px;
+}
+
+#barcode-scanner-modal .modal-body {
+    padding: 20px;
+}
+
+/* Scanner Viewport */
+#scanner-viewport {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#scanner-viewport video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#scanner-viewport canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Barcode Detection Overlay */
+#scanner-viewport canvas.drawingBuffer {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Scanner Status */
+#scanner-status {
+    margin-top: 15px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Product Info Display */
+#product-info {
+    margin-top: 10px;
+}
+
+/* Manual Input Section */
+.manual-barcode-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+.manual-barcode-section h6 {
+    margin-bottom: 10px;
+    color: #6c757d;
+}
+
+/* Loading Spinner */
+#search-loading {
+    display: none;
+    text-align: center;
+    padding: 10px;
+}
+
+#search-loading .spinner-border {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Scanner Button */
+#open-scanner-btn {
+    white-space: nowrap;
+}
+
+#open-scanner-btn i {
+    margin-right: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #scanner-viewport {
+        height: 300px;
+    }
+
+    #barcode-scanner-modal .modal-dialog {
+        max-width: 95%;
+        margin: 10px auto;
+    }
+}
+
+/* Animation for successful scan */
+@keyframes pulse-success {
+    0% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+    }
+}
+
+.scan-success {
+    animation: pulse-success 0.6s;
+}
+
+/* Barcode target guide */
+.barcode-guide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 60%;
+    border: 2px dashed rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.barcode-guide::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px solid rgba(40, 167, 69, 0.8);
+    border-radius: 8px;
+    animation: scan-line 2s ease-in-out infinite;
+}
+
+@keyframes scan-line {
+    0%, 100% {
+        clip-path: inset(0 0 100% 0);
+    }
+    50% {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+/* Clear search button */
+#clear-search-btn {
+    cursor: pointer;
+}
+
+/* Live search results highlight */
+.search-highlight {
+    background-color: #fff3cd;
+    font-weight: bold;
+}
