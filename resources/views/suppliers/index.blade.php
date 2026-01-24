@@ -62,7 +62,7 @@
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
                             <th>No.</th>
-                            <th>Foto</th>
+
                             <th>@sortablelink('name', 'Nama')</th>
                             <th>@sortablelink('email', 'Email')</th>
                             <th>@sortablelink('phone', 'No. HP')</th>
@@ -75,9 +75,7 @@
                         @foreach ($suppliers as $supplier)
                         <tr>
                             <td>{{ (($suppliers->currentPage() * 10) - 10) + $loop->iteration  }}</td>
-                            <td>
-                                <img class="avatar-60 rounded" src="{{ $supplier->photo ? asset('storage/suppliers/'.$supplier->photo) : asset('assets/images/user/1.png') }}">
-                            </td>
+
                             <td>{{ $supplier->name }}</td>
                             <td>{{ $supplier->email }}</td>
                             <td>{{ $supplier->phone }}</td>

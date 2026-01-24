@@ -43,7 +43,6 @@
 
 <script>
 $(document).ready(function() {
-    // Initialize Select2 for customer dropdown
     $('#customer_id').select2({
         placeholder: '-- Pilih atau Cari Pelanggan --',
         allowClear: true,
@@ -223,7 +222,6 @@ $(document).ready(function() {
                             <thead class="bg-white text-uppercase">
                                 <tr class="ligth ligth-data">
                                     <th>No.</th>
-                                    <th>Foto</th>
                                     <th>@sortablelink('product_name', 'Nama')</th>
                                     <th>@sortablelink('selling_price', 'Harga')</th>
                                     <th>Aksi</th>
@@ -233,9 +231,6 @@ $(document).ready(function() {
                                 @forelse ($products as $product)
                                 <tr>
                                     <td>{{ (($products->currentPage() * 10) - 10) + $loop->iteration  }}</td>
-                                    <td>
-                                        <img class="avatar-60 rounded" src="{{ $product->product_image ? asset('storage/products/'.$product->product_image) : asset('assets/images/product/default.webp') }}">
-                                    </td>
                                     <td>{{ $product->product_name }}</td>
                                     <td>Rp {{ number_format($product->selling_price, 0, ',', '.') }}</td>
                                     <td>

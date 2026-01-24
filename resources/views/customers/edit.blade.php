@@ -15,31 +15,6 @@
                     <form action="{{ route('customers.update', $customer->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('put')
-                        <!-- begin: Input Image -->
-                        <div class="form-group row align-items-center">
-                            <div class="col-md-12">
-                                <div class="profile-img-edit">
-                                    <div class="crm-profile-img-edit">
-                                        <img class="crm-profile-pic rounded-circle avatar-100" id="image-preview" src="{{ $customer->photo ? asset('storage/customers/'.$customer->photo) : asset('assets/images/user/1.png') }}" alt="profile-pic">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="input-group mb-4 col-lg-6">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input @error('photo') is-invalid @enderror" id="image" name="photo" accept="image/*" onchange="previewImage();">
-                                    <label class="custom-file-label" for="photo">Choose file</label>
-                                </div>
-                                @error('photo')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
-                        </div>
-                        <!-- end: Input Image -->
                         <!-- begin: Input Data -->
                         <div class=" row align-items-center">
                             <div class="form-group col-md-6">
@@ -153,5 +128,4 @@
     <!-- Page end  -->
 </div>
 
-@include('components.preview-img-form')
 @endsection

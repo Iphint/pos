@@ -69,7 +69,7 @@
                     <thead class="bg-white text-uppercase">
                         <tr class="ligth ligth-data">
                             <th>No.</th>
-                            <th>Foto</th>
+
                             <th>@sortablelink('product_name', 'Nama')</th>
                             <th>@sortablelink('category.name', 'Kategori')</th>
                             <th>@sortablelink('supplier.name', 'Pemasok')</th>
@@ -82,9 +82,7 @@
                         @forelse ($products as $product)
                         <tr>
                             <td>{{ (($products->currentPage() * 10) - 10) + $loop->iteration  }}</td>
-                            <td>
-                                <img class="avatar-60 rounded" src="{{ $product->product_image ? asset('storage/products/'.$product->product_image) : asset('assets/images/product/default.webp') }}">
-                            </td>
+
                             <td>{{ $product->product_name }}</td>
                             <td>{{ $product->category->name }}</td>
                             <td>{{ $product->supplier->name }}</td>

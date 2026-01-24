@@ -43,15 +43,6 @@
 
                 <div class="card-body">
                     <!-- begin: Show Data -->
-                    <div class="form-group row align-items-center">
-                        <div class="col-md-12">
-                            <div class="profile-img-edit">
-                                <div class="crm-profile-img-edit">
-                                    <img class="crm-profile-pic rounded-circle avatar-100" id="image-preview" src="{{ $product->product_image ? asset('storage/products/'.$product->product_image) : asset('assets/images/product/default.webp') }}" alt="profile-pic">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class=" row align-items-center">
                         <div class="form-group col-md-12">
@@ -112,5 +103,4 @@
     });
 </script>
 
-@include('components.preview-img-form')
 @endsection

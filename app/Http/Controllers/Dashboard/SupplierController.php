@@ -42,7 +42,6 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'photo' => 'image|file|max:1024',
             'name' => 'required|string|max:50',
             'email' => 'required|email|max:50|unique:suppliers,email',
             'phone' => 'required|string|max:15|unique:suppliers,phone',
@@ -58,16 +57,7 @@ class SupplierController extends Controller
 
         $validatedData = $request->validate($rules);
 
-        /**
-         * Handle upload image with Storage.
-         */
-        if ($file = $request->file('photo')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $path = 'public/suppliers/';
 
-            $file->storeAs($path, $fileName);
-            $validatedData['photo'] = $fileName;
-        }
 
         Supplier::create($validatedData);
 
@@ -100,7 +90,6 @@ class SupplierController extends Controller
     public function update(Request $request, Supplier $supplier)
     {
         $rules = [
-            'photo' => 'image|file|max:1024',
             'name' => 'required|string|max:50',
             'email' => 'required|email|max:50|unique:suppliers,email,'.$supplier->id,
             'phone' => 'required|string|max:15|unique:suppliers,phone,'.$supplier->id,
@@ -116,23 +105,7 @@ class SupplierController extends Controller
 
         $validatedData = $request->validate($rules);
 
-        /**
-         * Handle upload image with Storage.
-         */
-        if ($file = $request->file('photo')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $path = 'public/suppliers/';
 
-            /**
-             * Delete photo if exists.
-             */
-            if($supplier->photo){
-                Storage::delete($path . $supplier->photo);
-            }
-
-            $file->storeAs($path, $fileName);
-            $validatedData['photo'] = $fileName;
-        }
 
         Supplier::where('id', $supplier->id)->update($validatedData);
 
@@ -144,12 +117,7 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        /**
-         * Delete photo if exists.
-         */
-        if($supplier->photo){
-            Storage::delete('public/suppliers/' . $supplier->photo);
-        }
+
 
         Supplier::destroy($supplier->id);
 

@@ -41,7 +41,6 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'photo' => 'image|file|max:1024',
             'name' => 'required|string|max:50',
             'email' => 'required|email|max:50|unique:customers,email',
             'phone' => 'required|string|max:15|unique:customers,phone',
@@ -56,16 +55,7 @@ class CustomerController extends Controller
 
         $validatedData = $request->validate($rules);
 
-        /**
-         * Handle upload image with Storage.
-         */
-        if ($file = $request->file('photo')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $path = 'public/customers/';
 
-            $file->storeAs($path, $fileName);
-            $validatedData['photo'] = $fileName;
-        }
 
         Customer::create($validatedData);
 
@@ -98,7 +88,6 @@ class CustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
         $rules = [
-            'photo' => 'image|file|max:1024',
             'name' => 'required|string|max:50',
             'email' => 'required|email|max:50|unique:customers,email,'.$customer->id,
             'phone' => 'required|string|max:15|unique:customers,phone,'.$customer->id,
@@ -113,23 +102,7 @@ class CustomerController extends Controller
 
         $validatedData = $request->validate($rules);
 
-        /**
-         * Handle upload image with Storage.
-         */
-        if ($file = $request->file('photo')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $path = 'public/customers/';
 
-            /**
-             * Delete photo if exists.
-             */
-            if($customer->photo){
-                Storage::delete($path . $customer->photo);
-            }
-
-            $file->storeAs($path, $fileName);
-            $validatedData['photo'] = $fileName;
-        }
 
         Customer::where('id', $customer->id)->update($validatedData);
 
@@ -141,12 +114,7 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        /**
-         * Delete photo if exists.
-         */
-        if($customer->photo){
-            Storage::delete('public/customers/' . $customer->photo);
-        }
+
 
         Customer::destroy($customer->id);
 

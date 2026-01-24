@@ -64,7 +64,6 @@ class ProductController extends Controller
         ]);
 
         $rules = [
-            'product_image' => 'image|file|max:1024',
             'product_name' => 'required|string',
             'category_id' => 'required|integer',
             'supplier_id' => 'required|integer',
@@ -81,16 +80,7 @@ class ProductController extends Controller
         // save product code value
         $validatedData['product_code'] = $product_code;
 
-        /**
-         * Handle upload image with Storage.
-         */
-        if ($file = $request->file('product_image')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $path = 'public/products/';
 
-            $file->storeAs($path, $fileName);
-            $validatedData['product_image'] = $fileName;
-        }
 
         Product::create($validatedData);
 
@@ -131,7 +121,6 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $rules = [
-            'product_image' => 'image|file|max:1024',
             'product_name' => 'required|string',
             'category_id' => 'required|integer',
             'supplier_id' => 'required|integer',
@@ -145,23 +134,7 @@ class ProductController extends Controller
 
         $validatedData = $request->validate($rules);
 
-        /**
-         * Handle upload image with Storage.
-         */
-        if ($file = $request->file('product_image')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $path = 'public/products/';
 
-            /**
-             * Delete photo if exists.
-             */
-            if($product->product_image){
-                Storage::delete($path . $product->product_image);
-            }
-
-            $file->storeAs($path, $fileName);
-            $validatedData['product_image'] = $fileName;
-        }
 
         Product::where('id', $product->id)->update($validatedData);
 
@@ -173,12 +146,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        /**
-         * Delete photo if exists.
-         */
-        if($product->product_image){
-            Storage::delete('public/products/' . $product->product_image);
-        }
+
 
         Product::destroy($product->id);
 
@@ -217,7 +185,7 @@ class ProductController extends Controller
                     'supplier_id' => $sheet->getCell( 'C' . $row )->getValue(),
                     'product_code' => $sheet->getCell( 'D' . $row )->getValue(),
                     'product_garage' => $sheet->getCell( 'E' . $row )->getValue(),
-                    'product_image' => $sheet->getCell( 'F' . $row )->getValue(),
+
                     'product_store' =>$sheet->getCell( 'G' . $row )->getValue(),
                     'buying_date' =>$sheet->getCell( 'H' . $row )->getValue(),
                     'expire_date' =>$sheet->getCell( 'I' . $row )->getValue(),
@@ -269,7 +237,7 @@ class ProductController extends Controller
             'Supplier Id',
             'Product Code',
             'Product Garage',
-            'Product Image',
+
             'Product Store',
             'Buying Date',
             'Expire Date',
@@ -285,7 +253,7 @@ class ProductController extends Controller
                 'Supplier Id' => $product->supplier_id,
                 'Product Code' => $product->product_code,
                 'Product Garage' => $product->product_garage,
-                'Product Image' => $product->product_image,
+
                 'Product Store' =>$product->product_store,
                 'Buying Date' =>$product->buying_date,
                 'Expire Date' =>$product->expire_date,

@@ -176,9 +176,6 @@
                         <li class="col-lg-3">
                             <div class="card card-block card-stretch card-height mb-0">
                                 <div class="card-body">
-                                    <div class="bg-warning-light rounded">
-                                        <img src="{{ $product->product_image ? asset('storage/products/'.$product->product_image) : asset('assets/images/product/default.webp') }}" class="style-img img-fluid m-auto p-3" alt="image">
-                                    </div>
                                     <div class="style-text text-left mt-3">
                                         <h5 class="mb-1">{{ $product->product_name }}</h5>
                                         <p class="mb-0">{{ $product->product_store }} Item</p>
@@ -206,9 +203,6 @@
             <div class="card card-block card-stretch card-height-helf">
                 <div class="card-body card-item-right">
                     <div class="d-flex align-items-top">
-                        <div class="bg-warning-light rounded">
-                            <img src="../assets/images/product/04.png" class="style-img img-fluid m-auto" alt="image">
-                        </div>
                         <div class="style-text text-left">
                             <h5 class="mb-2">{{ $product->product_name }}</h5>
                             <p class="mb-2">Stok : {{ $product->product_store }}</p>
