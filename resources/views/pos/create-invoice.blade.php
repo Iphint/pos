@@ -23,7 +23,7 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header bg-white">
-                                        <h3 class="modal-title text-center mx-auto">Invoice of {{ $customer->name }}<br/>Total Amount ${{ Cart::total() }}</h3>
+                                        <h3 class="modal-title text-center mx-auto">Invoice of {{ $customer->name }}<br/>Total Amount Rp.{{ Cart::total() }}</h3>
                                     </div>
                                     <form action="{{ route('pos.storeOrder') }}" method="post">
                                         @csrf
@@ -69,110 +69,53 @@
                     </div>
                 </div>
 
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <img src="{{ asset('assets/images/logo.png') }}" class="logo-invoice img-fluid mb-3">
-                            <h4>Toko Lily</h4>
-                            <p>
-                                Jl. Griya Permata raya 1 No.54, Handil Bakti, Kec. Alalak,<br>
-                                Kabupaten Barito Kuala, Kalimantan Selatan 70582
-                            </p>
-                            <h5 class="mb-3 mt-4">Hello, {{ $customer->name }}</h5>
-                        </div>
-                    </div>
+                <div class="card-body d-flex justify-content-center">
+    <div style="width: 320px; font-family: monospace; font-size: 13px">
 
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="table-responsive-sm">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Order Date</th>
-                                            <th scope="col">Order Status</th>
-                                            <th scope="col">Billing Address</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>{{ Carbon\Carbon::now()->format('M d, Y') }}</td>
-                                            <td><span class="badge badge-danger">Unpaid</span></td>
-                                            <td>
-                                                <p class="mb-0">{{ $customer->address }}<br>
-                                                    Shop Name: {{ $customer->shopname ? $customer->shopname : '-' }}<br>
-                                                    Phone: {{ $customer->phone }}<br>
-                                                    Email: {{ $customer->email }}<br>
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+        <div class="text-center">
+            <strong>TOKO LILY</strong><br>
+            Jl. Griya Permata Raya 1 No.54<br>
+            Handil Bakti, Kalsel
+            <hr>
+        </div>
 
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h5 class="mb-3">Order Summary</h5>
-                            <div class="table-responsive-lg">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center" scope="col">#</th>
-                                            <th scope="col">Item</th>
-                                            <th class="text-center" scope="col">Quantity</th>
-                                            <th class="text-center" scope="col">Price</th>
-                                            <th class="text-center" scope="col">Totals</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($content as $item)
-                                        <tr>
-                                            <th class="text-center" scope="row">{{ $loop->iteration }}</th>
-                                            <td>
-                                                <h6 class="mb-0">{{ $item->name }}</h6>
-                                            </td>
-                                            <td class="text-center">{{ $item->qty }}</td>
-                                            <td class="text-center">{{ $item->price }}</td>
-                                            <td class="text-center"><b>{{ $item->subtotal }}</b></td>
-                                        </tr>
+        <div>
+            Tanggal : {{ now()->format('d/m/Y H:i') }}<br>
+            Kasir   : {{ auth()->user()->name }}<br>
+            Customer: {{ $customer->name }}
+        </div>
 
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+        <hr>
 
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <b class="text-danger">Notes:</b>
-                            <p class="mb-0">It is a long established fact that a reader will be distracted by the readable content of a page
-                                when looking
-                                at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
-                                as opposed to using 'Content here, content here', making it look like readable English.</p>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4 mb-3">
-                        <div class="offset-lg-8 col-lg-4">
-                            <div class="or-detail rounded">
-                                <div class="p-3">
-                                    <h5 class="mb-3">Order Details</h5>
-                                    <div class="mb-2">
-                                        <h6>Sub Total</h6>
-                                        <p>${{ Cart::subtotal() }}</p>
-                                    </div>
-
-                                </div>
-                                <div class="ttl-amt py-2 px-3 d-flex justify-content-between align-items-center">
-                                    <h6>Total</h6>
-                                    <h3 class="text-primary font-weight-700">${{ Cart::total() }}</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        @foreach ($content as $item)
+            <div class="d-flex justify-content-between">
+                <div>
+                    {{ $item->name }}<br>
+                    {{ $item->qty }} x {{ number_format($item->price) }}
                 </div>
+                <div>
+                    {{ number_format($item->subtotal) }}
+                </div>
+            </div>
+        @endforeach
+
+        <hr>
+
+        <div class="d-flex justify-content-between">
+            <strong>Total</strong>
+            <strong>{{ number_format(Cart::total()) }}</strong>
+        </div>
+
+        <hr>
+
+        <div class="text-center">
+            Terima kasih 🙏<br>
+            Barang yang sudah dibeli<br>
+            tidak dapat dikembalikan
+        </div>
+
+    </div>
+</div>
             </div>
         </div>
     </div>

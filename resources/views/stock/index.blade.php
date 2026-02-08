@@ -82,7 +82,7 @@
                             <td>{{ $product->product_name }}</td>
                             <td>{{ $product->category->name }}</td>
                             <td>{{ $product->supplier->name }}</td>
-                            <td>${{ $product->selling_price }}</td>
+                            <td>Rp.{{ $product->selling_price }}</td>
                             <td>
                                 <span class="btn btn-warning text-white mr-2">{{ $product->product_store }}</span>
                             </td>

@@ -48,7 +48,7 @@ class EmployeeController extends Controller
             'experience' => 'max:6|nullable',
             'salary' => 'required|numeric',
             'vacation' => 'max:50|nullable',
-            'city' => 'requried|max:50',
+            'city' => 'required|max:50',
             'address' => 'required|max:100',
         ];
 

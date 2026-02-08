@@ -119,8 +119,7 @@ class RoleController extends Controller
 
         Role::findOrFail($id)->update($validatedData);
 
-        // ini masih error
-        return Redirect::route('roles.role-index')->with('success', 'Role berhasil diperbarui!');
+        return Redirect::route('role.index')->with('success', 'Role berhasil diperbarui!');
     }
 
     public function roleDestroy(Int $id)

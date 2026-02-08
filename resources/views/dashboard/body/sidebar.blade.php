@@ -1,13 +1,18 @@
 
 <div class="iq-sidebar sidebar-default ">
-    <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
-        <a href="{{ route('dashboard') }}" class="header-logo">
-            <img src="{{ asset('assets/images/logo.png') }}" class="img-fluid rounded-normal light-logo" alt="logo"><h5 class="logo-title light-logo ml-3">Toko Lily</h5>
-        </a>
-        <div class="iq-menu-bt-sidebar ml-0">
-            <i class="las la-bars wrapper-menu"></i>
-        </div>
-    </div>
+<div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
+    <a href="{{ route('dashboard') }}" class="header-logo d-flex align-items-center">
+        <img src="{{ asset('assets/images/logo.png') }}"
+             class="img-fluid rounded-normal light-logo"
+             alt="logo">
+        <h5 class="logo-title light-logo ml-3">Toko Lily</h5>
+    </a>
+
+    <!-- HAMBURGER -->
+    <button class="hamburger-btn d-lg-none" id="sidebarToggle">
+        <i class="las la-bars"></i>
+    </button>
+</div>
     <div class="data-scrollbar" data-scroll="1">
         <nav class="iq-sidebar-menu">
             <ul id="iq-sidebar-toggle" class="iq-menu">
