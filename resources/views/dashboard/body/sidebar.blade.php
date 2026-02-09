@@ -61,6 +61,12 @@
                         </li>
                     </ul>
                 </li>
+                <li class="{{ Request::is('stock*') ? 'active' : '' }}">
+                    <a href="{{ route('order.stockManage') }}">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        <span class="ml-3">Manajemen Stok</span>
+                    </a>
+                </li>
                 @endif
                 @if (auth()->user()->can('product.menu'))
                 <li>
@@ -88,12 +94,6 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li>
-                    <a href="#stock" class="collapsed" data-toggle="collapse" aria-expanded="false">
-                        <i class="fa-solid fa-boxes-stacked"></i>
-                        <span class="ml-3">Manajemen Stok</span>
-                    </a>
                 </li>
                 @endif
                 <hr>

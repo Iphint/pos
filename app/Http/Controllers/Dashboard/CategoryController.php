@@ -93,8 +93,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        Category::destroy($category->slug);
+        $category->delete();
 
-        return Redirect::route('categories.index')->with('success', 'Kategori berhasil dihapus!');
+        return redirect()
+            ->route('categories.index')
+            ->with('success', 'Kategori berhasil dihapus!');
     }
 }
