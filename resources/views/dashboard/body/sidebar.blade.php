@@ -42,6 +42,13 @@
                             <polyline points="10 15 15 20 20 15"></polyline><path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                         </svg>
                     </a>
+                    <li>
+    <a href="#stock" class="collapsed" data-toggle="collapse" aria-expanded="false">
+        <i class="fa-solid fa-boxes-stacked"></i>
+        <span class="ml-3">Manajemen Stok</span>
+    </a>
+</li>
+                </li>
                     <ul id="orders" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="">
 
                         <li class="{{ Request::is('orders/pending*') ? 'active' : '' }}">
@@ -57,11 +64,6 @@
                         <li class="{{ Request::is('pending/due*') ? 'active' : '' }}">
                             <a href="{{ route('order.pendingDue') }}">
                                 <i class="fa-solid fa-arrow-right"></i><span>Hutang Tertunda</span>
-                            </a>
-                        </li>
-                        <li class="{{ Request::is(['stock*']) ? 'active' : '' }}">
-                            <a href="{{ route('order.stockManage') }}">
-                                <i class="fa-solid fa-arrow-right"></i><span>Manajemen Stok</span>
                             </a>
                         </li>
                     </ul>
