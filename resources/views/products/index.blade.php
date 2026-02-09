@@ -79,47 +79,52 @@
                         </tr>
                     </thead>
                     <tbody class="ligth-body">
-                        @forelse ($products as $product)
-                        <tr>
-                            <td>{{ (($products->currentPage() * 10) - 10) + $loop->iteration  }}</td>
+@forelse ($products as $product)
+<tr>
+    <td>{{ (($products->currentPage() * request('row', 10)) - request('row', 10)) + $loop->iteration }}</td>
 
-                            <td>{{ $product->product_name }}</td>
-                            <td>{{ $product->category->name }}</td>
-                            <td>{{ $product->supplier->name }}</td>
-                            <td>Rp {{ number_format($product->selling_price, 0, ',', '.') }}</td>
-                            <td>
-                                @if ($product->expire_date > Carbon\Carbon::now()->format('Y-m-d'))
-                                    <span class="badge rounded-pill bg-success">Valid</span>
-                                @else
-                                    <span class="badge rounded-pill bg-danger">Tidak Valid</span>
-                                @endif
-                            </td>
-                            <td>
-                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="margin-bottom: 5px">
-                                    @method('delete')
-                                    @csrf
-                                    <div class="d-flex align-items-center list-action">
-                                        <a class="btn btn-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Lihat"
-                                            href="{{ route('products.show', $product->id) }}"><i class="ri-eye-line mr-0"></i> Lihat
-                                        </a>
-                                        <a class="btn btn-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ubah"
-                                            href="{{ route('products.edit', $product->id) }}""><i class="ri-pencil-line mr-0"></i> Ubah
-                                        </a>
-                                            <button type="submit" class="btn btn-warning mr-2 border-none" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Hapus"><i class="ri-delete-bin-line mr-0"></i> Hapus</button>
-                                    </div>
-                                </form>
-                            </td>
-                        </tr>
+    <td>{{ $product->product_name }}</td>
+    <td>{{ optional($product->category)->name ?? '-' }}</td>
+    <td>{{ optional($product->supplier)->name ?? '-' }}</td>
+    <td>Rp {{ number_format($product->selling_price, 0, ',', '.') }}</td>
 
-                        @empty
-                        <div class="alert text-white bg-danger" role="alert">
-                            <div class="iq-alert-text">Data tidak ditemukan.</div>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <i class="ri-close-line"></i>
-                            </button>
-                        </div>
-                        @endforelse
-                    </tbody>
+    <td>
+        @if ($product->expire_date && $product->expire_date > now()->format('Y-m-d'))
+            <span class="badge rounded-pill bg-success">Valid</span>
+        @else
+            <span class="badge rounded-pill bg-danger">Tidak Valid</span>
+        @endif
+    </td>
+
+    <td>
+        <form action="{{ route('products.destroy', $product->id) }}" method="POST">
+            @csrf
+            @method('delete')
+            <div class="d-flex align-items-center list-action">
+                <a class="btn btn-info mr-2" href="{{ route('products.show', $product->id) }}">
+                    <i class="ri-eye-line mr-0"></i> Lihat
+                </a>
+                <a class="btn btn-success mr-2" href="{{ route('products.edit', $product->id) }}">
+                    <i class="ri-pencil-line mr-0"></i> Ubah
+                </a>
+                <button type="submit" class="btn btn-warning"
+                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                    <i class="ri-delete-bin-line mr-0"></i> Hapus
+                </button>
+            </div>
+        </form>
+    </td>
+</tr>
+@empty
+<tr>
+    <td colspan="7">
+        <div class="alert alert-danger text-center">
+            Data tidak ditemukan.
+        </div>
+    </td>
+</tr>
+@endforelse
+</tbody>
                 </table>
             </div>
             {{ $products->links() }}
