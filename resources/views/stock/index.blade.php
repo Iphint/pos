@@ -79,9 +79,8 @@
                             <td>
                                 <img class="avatar-60 rounded" src="{{ $product->product_image ? asset('storage/products/'.$product->product_image) : asset('assets/images/product/default.webp') }}">
                             </td>
-                            <td>{{ $product->product_name }}</td>
-                            <td>{{ $product->category->name }}</td>
-                            <td>{{ $product->supplier->name }}</td>
+                            <td>{{ optional($product->category)->name ?? '-' }}</td>
+                            <td>{{ optional($product->supplier)->name ?? '-' }}</td>
                             <td>Rp.{{ $product->selling_price }}</td>
                             <td>
                                 <span class="btn btn-warning text-white mr-2">{{ $product->product_store }}</span>
