@@ -59,11 +59,6 @@
                                 <i class="fa-solid fa-arrow-right"></i><span>Hutang Tertunda</span>
                             </a>
                         </li>
-                        <li class="{{ Request::is(['stock*']) ? 'active' : '' }}">
-                            <a href="{{ route('order.stockManage') }}">
-                                <i class="fa-solid fa-arrow-right"></i><span>Manajemen Stok</span>
-                            </a>
-                        </li>
                     </ul>
                 </li>
                 <li class="{{ Request::is('stock*') ? 'active' : '' }}">
