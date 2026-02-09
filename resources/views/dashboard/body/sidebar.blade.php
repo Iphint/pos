@@ -42,13 +42,6 @@
                             <polyline points="10 15 15 20 20 15"></polyline><path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
                         </svg>
                     </a>
-                    <li>
-    <a href="#stock" class="collapsed" data-toggle="collapse" aria-expanded="false">
-        <i class="fa-solid fa-boxes-stacked"></i>
-        <span class="ml-3">Manajemen Stok</span>
-    </a>
-</li>
-                </li>
                     <ul id="orders" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="">
 
                         <li class="{{ Request::is('orders/pending*') ? 'active' : '' }}">
@@ -95,6 +88,12 @@
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li>
+                    <a href="#stock" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        <span class="ml-3">Manajemen Stok</span>
+                    </a>
                 </li>
                 @endif
                 <hr>
