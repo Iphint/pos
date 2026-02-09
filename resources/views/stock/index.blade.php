@@ -84,10 +84,13 @@
                             <td>{{ optional($product->supplier)->name ?? '-' }}</td>
                             <td>Rp.{{ $product->selling_price }}</td>
                             <td>
-                                <span class="btn btn-warning text-white mr-2">{{ $product->product_store }}</span>
+                                <span class="btn 
+                                    {{ $product->product_store == 0 ? 'btn-danger' : 'btn-warning' }} 
+                                    text-white mr-2">
+                                    {{ $product->product_store }}
+                                </span>
                             </td>
                         </tr>
-
                         @empty
                         <div class="alert text-white bg-danger" role="alert">
                             <div class="iq-alert-text">Data not Found.</div>
