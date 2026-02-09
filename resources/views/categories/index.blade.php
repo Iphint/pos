@@ -75,12 +75,11 @@
                             <td>
                                 <div class="d-flex align-items-center list-action">
                                     <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                        href="{{ route('categories.edit', $category->slug) }}""><i class="ri-pencil-line mr-0"></i>
-                                    </a>
+                                        href="{{ route('categories.edit', $category->slug) }}">Edit</a>
                                     <form action="{{ route('categories.destroy', $category->slug) }}" method="POST" style="margin-bottom: 5px">
                                         @method('delete')
                                         @csrf
-                                        <button type="submit" class="badge bg-warning mr-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line mr-0"></i></button>
+                                        <button type="submit" class="badge bg-warning mr-2 border-none" onclick="return confirm('Are you sure you want to delete this record?')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">Delete</button>
                                     </form>
                                 </div>
                             </td>
