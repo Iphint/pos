@@ -74,8 +74,8 @@ class OrderController extends Controller
         $rules = [
             'customer_id' => 'nullable',
             'payment_status' => 'required|string',
-            'pay' => 'numeric|nullable',
-            'due' => 'numeric|nullable',
+            'pay' => 'nullable|numeric',
+            'due' => 'nullable|numeric',
         ];
 
         $invoice_no = IdGenerator::generate([
@@ -86,37 +86,40 @@ class OrderController extends Controller
         ]);
 
         $validatedData = $request->validate($rules);
-        $validatedData['order_date'] = Carbon::now()->format('Y-m-d');
-        $validatedData['order_status'] = 'pending';
+
+        // Ambil nilai CART sebagai NUMBER
+        $subTotal = Cart::subtotal(0, '', '');
+        $tax      = Cart::tax(0, '', '');
+        $total    = Cart::total(0, '', '');
+        $pay      = $validatedData['pay'] ?? 0;
+
+        $validatedData['order_date']     = now()->format('Y-m-d');
+        $validatedData['order_status']   = 'pending';
         $validatedData['total_products'] = Cart::count();
-        $validatedData['sub_total'] = Cart::subtotal();
-        $validatedData['vat'] = Cart::tax();
-        $validatedData['invoice_no'] = $invoice_no;
-        $validatedData['total'] = Cart::total();
-        $validatedData['due'] = Cart::total() - $validatedData['pay'];
-        $validatedData['created_at'] = Carbon::now();
+        $validatedData['sub_total']      = $subTotal;
+        $validatedData['vat']            = $tax;
+        $validatedData['total']          = $total;
+        $validatedData['invoice_no']     = $invoice_no;
+        $validatedData['due']            = $total - $pay;
+        $validatedData['created_at']     = now();
 
         $order_id = Order::insertGetId($validatedData);
 
-        // Create Order Details
-        $contents = Cart::content();
-        $oDetails = array();
-
-        foreach ($contents as $content) {
-            $oDetails['order_id'] = $order_id;
-            $oDetails['product_id'] = $content->id;
-            $oDetails['quantity'] = $content->qty;
-            $oDetails['unitcost'] = $content->price;
-            $oDetails['total'] = $content->total;
-            $oDetails['created_at'] = Carbon::now();
-
-            OrderDetails::insert($oDetails);
+        foreach (Cart::content() as $content) {
+            OrderDetails::insert([
+                'order_id'  => $order_id,
+                'product_id' => $content->id,
+                'quantity'  => $content->qty,
+                'unitcost'  => $content->price,
+                'total'     => $content->total,
+                'created_at' => now()
+            ]);
         }
 
-        // Delete Cart Sopping History
         Cart::destroy();
 
-        return Redirect::route('dashboard')->with('success', 'Pesanan berhasil dibuat!');
+        return redirect()->route('dashboard')
+            ->with('success', 'Pesanan berhasil dibuat!');
     }
 
     /**
@@ -126,9 +129,9 @@ class OrderController extends Controller
     {
         $order = Order::where('id', $order_id)->first();
         $orderDetails = OrderDetails::with('product')
-                        ->where('order_id', $order_id)
-                        ->orderBy('id', 'DESC')
-                        ->get();
+            ->where('order_id', $order_id)
+            ->orderBy('id', 'DESC')
+            ->get();
 
         return view('orders.details-order', [
             'order' => $order,
@@ -148,7 +151,7 @@ class OrderController extends Controller
 
         foreach ($products as $product) {
             Product::where('id', $product->product_id)
-                    ->update(['product_store' => DB::raw('product_store-'.$product->quantity)]);
+                ->update(['product_store' => DB::raw('product_store-' . $product->quantity)]);
         }
 
         Order::findOrFail($order_id)->update(['order_status' => 'complete']);
@@ -160,9 +163,9 @@ class OrderController extends Controller
     {
         $order = Order::where('id', $order_id)->first();
         $orderDetails = OrderDetails::with('product')
-                        ->where('order_id', $order_id)
-                        ->orderBy('id', 'DESC')
-                        ->get();
+            ->where('order_id', $order_id)
+            ->orderBy('id', 'DESC')
+            ->get();
 
         // show data (only for debugging)
         return view('orders.invoice-order', [

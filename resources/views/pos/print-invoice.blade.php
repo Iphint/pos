@@ -14,7 +14,7 @@
         }
 
         .receipt {
-            width: 300px; /* 58mm = ±220px | 80mm = ±300px */
+            width: 300px;
             margin: auto;
             padding: 10px;
         }

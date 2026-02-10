@@ -75,7 +75,7 @@
                             <td>{{ $order->customer ? $order->customer->name : 'Pelanggan Umum' }}</td>
                             <td>{{ $order->order_date }}</td>
                             <td>{{ $order->payment_status }}</td>
-                            <td>Rp.{{ $order->total }}</td>
+                            <td>Rp {{ number_format($order->total, 0, ',', '.') }}</td>
                             <td>
                                 <span class="badge badge-danger">{{ $order->order_status }}</span>
                             </td>

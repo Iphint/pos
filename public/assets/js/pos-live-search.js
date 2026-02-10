@@ -31,10 +31,8 @@
         // Debounce search
         searchTimeout = setTimeout(() => {
             if (query.length === 0) {
-                searchResults.innerHTML = '';
-                if (loadingIndicator) {
-                    loadingIndicator.style.display = 'none';
-                }
+                // Reload page untuk menampilkan data default
+                window.location.reload();
                 return;
             }
 
@@ -46,7 +44,12 @@
                     'Accept': 'application/json'
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (loadingIndicator) {
                     loadingIndicator.style.display = 'none';
@@ -54,6 +57,8 @@
 
                 if (data.success) {
                     renderSearchResults(data.products);
+                } else {
+                    throw new Error('Search failed');
                 }
             })
             .catch(error => {
@@ -63,7 +68,7 @@
                 }
                 searchResults.innerHTML = `
                     <tr>
-                        <td colspan="5" class="text-center text-danger">
+                        <td colspan="4" class="text-center text-danger">
                             Terjadi kesalahan saat mencari produk.
                         </td>
                     </tr>
@@ -72,12 +77,17 @@
         }, 300); // 300ms debounce
     }
 
+    // Format harga ke Rupiah
+    function formatRupiah(amount) {
+        return 'Rp ' + new Intl.NumberFormat('id-ID').format(amount);
+    }
+
     // Render search results
     function renderSearchResults(products) {
         if (products.length === 0) {
             searchResults.innerHTML = `
                 <tr>
-                    <td colspan="5" class="text-center text-muted">
+                    <td colspan="4" class="text-center text-muted">
                         Tidak ada produk yang ditemukan.
                     </td>
                 </tr>
@@ -94,18 +104,11 @@
 
         let html = '';
         products.forEach((product, index) => {
-            const imageUrl = product.product_image 
-                ? `/storage/products/${product.product_image}` 
-                : '/assets/images/product/default.webp';
-
             html += `
                 <tr>
                     <td>${index + 1}</td>
-                    <td>
-                        <img class="avatar-60 rounded" src="${imageUrl}" alt="${product.product_name}">
-                    </td>
                     <td>${product.product_name}</td>
-                    <td>${product.selling_price}</td>
+                    <td>${formatRupiah(product.selling_price)}</td>
                     <td>
                         <form action="/pos/add" method="POST" style="margin-bottom: 5px">
                             <input type="hidden" name="_token" value="${csrfToken}">
@@ -141,8 +144,7 @@
         clearSearchBtn.addEventListener('click', function(e) {
             e.preventDefault();
             searchInput.value = '';
-            searchResults.innerHTML = '';
-            searchInput.focus();
+            window.location.reload(); // Reload untuk menampilkan semua produk
         });
     }
 })();

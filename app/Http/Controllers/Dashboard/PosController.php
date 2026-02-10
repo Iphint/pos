@@ -41,22 +41,47 @@ class PosController extends Controller
 
         $validatedData = $request->validate($rules);
 
+        // Get product untuk cek stock
+        $product = Product::find($validatedData['id']);
+
+        if (!$product) {
+            return redirect()->back()->with('error', 'Produk tidak ditemukan!');
+        }
+
+        // GANTI 'stock' dengan 'product_store'
+        if ($product->product_store < 1) {
+            return redirect()->back()->with('error', 'Stok produk habis!');
+        }
+
+        $qtyInCart = 0;
+        foreach (Cart::content() as $item) {
+            if ($item->id == $validatedData['id']) {
+                $qtyInCart = $item->qty;
+                break;
+            }
+        }
+        if (($qtyInCart + 1) > $product->product_store) {
+            return redirect()->back()->with('error', "Tidak bisa menambah lagi! Stok: {$product->product_store}, Di keranjang: {$qtyInCart}");
+        }
+
+        // Add to cart
         Cart::add([
             'id' => $validatedData['id'],
             'name' => $validatedData['name'],
             'qty' => 1,
             'price' => $validatedData['price'],
-            'options' => ['size' => 'large']
+            'options' => [
+                'stock' => $product->product_store
+            ]
         ]);
 
-        return Redirect::back()->with('success', 'Produk berhasil ditambahkan!');
+        return redirect()->back()->with('success', 'Produk berhasil ditambahkan!');
     }
 
     public function searchProducts(Request $request)
     {
         $query = $request->get('q', '');
-        $todayDate = Carbon::now();
-        
+
         if (empty($query)) {
             return response()->json([
                 'success' => true,
@@ -64,13 +89,12 @@ class PosController extends Controller
             ]);
         }
 
-        $products = Product::where('expire_date', '>', $todayDate)
-            ->where(function($q) use ($query) {
-                $q->where('product_name', 'LIKE', "%{$query}%")
-                  ->orWhere('product_code', 'LIKE', "%{$query}%");
-            })
+        $products = Product::where(function ($q) use ($query) {
+            $q->where('product_name', 'LIKE', "%{$query}%")
+                ->orWhere('product_code', 'LIKE', "%{$query}%");
+        })
             ->limit(20)
-            ->get(['id', 'product_name', 'product_code', 'selling_price', 'product_image']);
+            ->get(['id', 'product_name', 'product_code', 'selling_price']);
 
         return response()->json([
             'success' => true,
@@ -160,7 +184,7 @@ class PosController extends Controller
         ];
 
         $validatedData = $request->validate($rules);
-        
+
         if (!empty($validatedData['customer_id'])) {
             $customer = Customer::where('id', $validatedData['customer_id'])->first();
         } else {
@@ -190,7 +214,7 @@ class PosController extends Controller
         ];
 
         $validatedData = $request->validate($rules);
-        
+
         if (!empty($validatedData['customer_id'])) {
             $customer = Customer::where('id', $validatedData['customer_id'])->first();
         } else {
