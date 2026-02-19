@@ -65,7 +65,7 @@
                                 </div>
                                 <div>
                                     <p class="mb-2">Total Hutang</p>
-                                    <h4>Rp {{ number_format($total_due, 0, ',', '.') }}</h4>
+                                  <h4>Rp {{ number_format(max($total_due, 0), 0, ',', '.') }}</h4>
                                 </div>
                             </div>
                             <div class="iq-progress-bar mt-2">
